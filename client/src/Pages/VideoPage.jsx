@@ -34,38 +34,24 @@ const VideoPage = () => {
     setCopied(true);
   };
 
-  const toggleVolume = (videoId) => {
-    setVideos((prevVideos) =>
-      prevVideos.map((video) => {
-        if (video._id === videoId) {
-          return {
-            ...video,
-            muted: !video.muted,
-          };
-        }
-        return video;
-      })
-    );
+  const [video, setVideo] = useState(null);
+
+  // Function to toggle play/pause of the video
+  const togglePlay = () => {
+    if (video) {
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    }
   };
 
-  // Function to toggle play/pause of a video
-  const togglePlay = (videoId) => {
-    setVideos((prevVideos) =>
-      prevVideos.map((video) => {
-        if (video._id === videoId) {
-          const videoElement = document.getElementById(`video-${video._id}`);
-          if (videoElement) {
-            if (videoElement.paused) {
-              videoElement.play();
-            } else {
-              videoElement.pause();
-            }
-          }
-          return video;
-        }
-        return video;
-      })
-    );
+  // Function to toggle the volume of the video
+  const toggleVolume = () => {
+    if (video) {
+      video.muted = !video.muted;
+    }
   };
   return (
     <>
@@ -118,17 +104,27 @@ const VideoPage = () => {
                   Share your Video
                 </h1>
                 <div className="flex md:flex-row flex-col gap-3 items-center  max-w-md mt-3">
-                  <div
-                    className="inline-flex items-center text-sm px-2 py-1 text-[ry-900
-#08051E] rounded gap-2 border border-[#0A0628]"
-                  >
-                    <FaFacebook color="#1877F2" size={18} /> Facebook
+                  <div className="inline-flex items-center text-sm px-2 py-1 text-[ry-900 #08051E] rounded gap-2 border border-[#0A0628]">
+                    <a
+                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                        videoURL
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaFacebook color="#1877F2" size={18} /> Facebook
+                    </a>
                   </div>
-                  <div
-                    className="inline-flex items-center text-sm px-2 py-1 text-[ry-900
-#08051E] rounded gap-2 border border-[#0A0628]"
-                  >
-                    <FaWhatsapp color="#25D366" size={18} /> Whatsapp
+                  <div className="inline-flex items-center text-sm px-2 py-1 text-[ry-900 #08051E] rounded gap-2 border border-[#0A0628]">
+                    <a
+                      href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+                        videoURL
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaWhatsapp color="#25D366" size={18} /> WhatsApp
+                    </a>
                   </div>
                   <div
                     className="inline-flex items-center text-sm px-2 py-1 text-[ry-900
@@ -144,6 +140,7 @@ const VideoPage = () => {
             <div className="border-[1px]  border-[#959494] flex-wrap  rounded-md">
               <p className="text-[#08051E] font-semibold text-sm">Video URL:</p>
               <video
+                ref={(el) => setVideo(el)}
                 controls
                 width="100%"
                 src={videoURL}
