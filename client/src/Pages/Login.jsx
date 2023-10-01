@@ -4,7 +4,7 @@ import { FaFacebook } from "react-icons/fa";
 const Login = () => {
   return (
     <div className="bg-white ">
-      <div className="container mx-auto py-10">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 py-10">
         <div>
           <img src={Logo} alt="" className="w-32" />
         </div>

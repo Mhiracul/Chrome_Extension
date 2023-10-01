@@ -28,7 +28,7 @@ const VideoRepository = () => {
           <FaUserCircle size={25} />
         </div>
 
-        <div className="flex justify-between items-center py-8">
+        <div className="flex md:flex-row flex-col gap-3 justify-between items-center py-8">
           <div className="flex flex-col gap-2 items-center">
             <h1 className="font-sora font-semibold text-xl">
               Hello, John Mark

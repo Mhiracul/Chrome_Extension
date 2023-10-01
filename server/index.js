@@ -28,6 +28,7 @@ const videoSchema = new mongoose.Schema({
   filename: String,
   originalname: String,
   uploadDate: Date,
+  videoURL: String,
 });
 
 const Video = mongoose.model("Video", videoSchema);
@@ -45,17 +46,19 @@ const upload = multer({ storage });
 // Define a route for video uploads
 app.post("/api/upload", upload.single("video"), async (req, res) => {
   try {
+    const videoURL = `${req.protocol}://${req.get("host")}/api/video/${
+      video._id
+    }`;
+
     const video = new Video({
       filename: req.file.filename,
       originalname: req.file.originalname,
       uploadDate: new Date(),
+      videoURL: videoURL,
     });
 
     await video.save();
 
-    const videoURL = `${req.protocol}://${req.get("host")}/api/video/${
-      video._id
-    }`;
     res.json({ message: "Video uploaded successfully", videoURL });
   } catch (error) {
     console.error("Error uploading video:", error);
