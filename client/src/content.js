@@ -139,7 +139,7 @@ function onAccessApproved(stream) {
     let recordedBlob = event.data;
 
     // Send the video data as a raw blob in the request body
-    fetch("https://54.221.51.134:9000/api/", {
+    fetch("https://chrome-fd0g.onrender.com/api/upload", {
       method: "POST",
       body: recordedBlob,
     })
