@@ -62,8 +62,9 @@ const VideoRepository = () => {
                   height="240"
                   className="rounded-lg"
                 >
-                  <source src={video.url} type="video/webm" />
-                  Your browser does not support the video tag.
+                  <source src={video.urlWebM} type="video/webm" />
+                  <source src={video.urlMP4} type="video/mp4" /> Your browser
+                  does not support the video tag.
                 </video>
                 <div className="flex md:flex-row gap-3 justify-between items-start">
                   <div className="py-3">
