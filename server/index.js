@@ -95,6 +95,34 @@ app.get("/api/videos", async (req, res) => {
   }
 });
 
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: "mokeke250@gmail.com",
+    pass: "lxvycnellvurscyl",
+  },
+});
+
+// Define a route to send emails
+app.post("/api/send-email", async (req, res) => {
+  const { receiverEmail, videoURL } = req.body;
+
+  try {
+    // Send email
+    await transporter.sendMail({
+      from: '"HelpMeOut" <info@pendoraventures.com>',
+      to: receiverEmail,
+      subject: "Your Video Link",
+      text: `Here is the link to your video: ${videoURL}`,
+    });
+
+    res.status(200).json({ message: "Email sent successfully!" });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ error: "Failed to send email" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

@@ -4,7 +4,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FiCopy } from "react-icons/fi";
 import { AiOutlinePauseCircle, AiOutlinePlayCircle } from "react-icons/ai";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { FaFacebook, FaTelegram, FaWhatsapp } from "react-icons/fa";
 import Availabilty from "../components/Availabilty";
 import { BiSolidVolumeFull, BiVolumeFull, BiVolumeMute } from "react-icons/bi";
@@ -29,6 +30,7 @@ const VideoPage = () => {
     textField.select();
     document.execCommand("copy");
     document.body.removeChild(textField);
+    toast.success("Copied!");
 
     // Update the state to indicate that the URL has been copied
     setCopied(true);
@@ -79,40 +81,44 @@ const VideoPage = () => {
                 >
                   <FiCopy color="#000" /> Copy
                 </button>
-                {copied && <span className="text-green-500">Copied!</span>}
+                {copied && (
+                  <ToastContainer
+                    position="bottom-center"
+                    autoClose={2000} // Adjust this value as needed
+                  />
+                )}
               </div>
 
               <div>
                 <h1 className="text-[#08051E] font-semibold text-sm">
                   Share your Video
                 </h1>
-                <div className="flex md:flex-row flex-col gap-3 items-center  max-w-md mt-3">
-                  <div className="inline-flex items-center text-sm px-2 py-1 text-[ry-900 #08051E] rounded gap-2 border border-[#0A0628]">
+                <div className="flex md:flex-row  gap-3 items-center  max-w-md mt-3">
+                  <div className=" md:text-sm text-xs   text-[#08051E] rounded  border border-[#0A0628]">
                     <a
                       href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
                         videoURL
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-2 py-1"
                     >
                       <FaFacebook color="#1877F2" size={18} /> Facebook
                     </a>
                   </div>
-                  <div className="inline-flex items-center text-sm px-2 py-1 text-[ry-900 #08051E] rounded gap-2 border border-[#0A0628]">
+                  <div className="md:text-sm text-xs  text-[#08051E] rounded  border border-[#0A0628]">
                     <a
                       href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
                         videoURL
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-2 py-1"
                     >
                       <FaWhatsapp color="#25D366" size={18} /> WhatsApp
                     </a>
                   </div>
-                  <div
-                    className="inline-flex items-center text-sm px-2 py-1 text-[ry-900
-#08051E] rounded gap-2 border border-[#0A0628]"
-                  >
+                  <div className="inline-flex items-center md:text-sm text-xs  px-2 py-1 text-[#08051E] rounded gap-2 border border-[#0A0628]">
                     <FaTelegram color="#2AABEE" size={18} /> Telegram
                   </div>
                 </div>
@@ -121,12 +127,12 @@ const VideoPage = () => {
           </div>
           <div className="video-grid w-full">
             <div className="border-[1px]  border-[#959494] flex-wrap  rounded-md">
-              <p className="text-[#08051E] font-semibold text-sm">Video URL:</p>
               <video
                 controls
                 width="100%"
                 src={videoURL}
-                className="my-2 rounded-md"
+                className=" rounded-md"
+                type="video/webm"
               >
                 Your browser does not support the video tag.
               </video>

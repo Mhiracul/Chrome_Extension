@@ -66,7 +66,7 @@ const VideoRepository = () => {
                   className="rounded-md"
                 >
                   <source
-                    src={`http://localhost:3000/api/video/${video._id}`}
+                    src={`https://chrome-fd0g.onrender.com/api/video/${video._id}`}
                     type="video/webm"
                   />
                   Your browser does not support the video tag.
