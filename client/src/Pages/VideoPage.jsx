@@ -121,14 +121,9 @@ const VideoPage = () => {
           <div className="video-grid w-full">
             <div>
               <p className="text-[#08051E] font-semibold text-sm">Video URL:</p>
-              <a
-                href={videoURL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
-              >
-                {videoURL}
-              </a>
+              <video controls width="100%" src={videoURL} className="my-2">
+                Your browser does not support the video tag.
+              </video>
             </div>
           </div>
         </div>

@@ -150,7 +150,7 @@ function onAccessApproved(stream) {
         console.log("Video uploaded:", data.message);
 
         // Redirect to the next page with the video URL as a query parameter
-        window.location.href = `/https://grand-figolla-565a1d.netlify.app/video?videoURL=${encodeURIComponent(
+        window.location.href = `https://grand-figolla-565a1d.netlify.app/video?videoURL=${encodeURIComponent(
           data.videoURL
         )}`;
       })
