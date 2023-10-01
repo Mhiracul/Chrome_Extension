@@ -48,11 +48,7 @@ const VideoPage = () => {
   };
 
   // Function to toggle the volume of the video
-  const toggleVolume = () => {
-    if (video) {
-      video.muted = !video.muted;
-    }
-  };
+
   return (
     <>
       <Navbar />
@@ -149,22 +145,6 @@ const VideoPage = () => {
                 Your browser does not support the video tag.
               </video>
               <div className="video-controls flex flex-wrap  justify-end gap-4 py-2 px-6">
-                <button
-                  className="outline-none flex flex-wrap  flex-col gap-1 items-center"
-                  onClick={() => toggleVolume(video._id)}
-                >
-                  {video.muted ? (
-                    <>
-                      <BiVolumeMute />
-                      <span className="text-[10px]">Volume</span>
-                    </>
-                  ) : (
-                    <>
-                      <BiVolumeFull />{" "}
-                      <span className="text-[10px]">Volume</span>
-                    </>
-                  )}
-                </button>
                 <button
                   onClick={() => togglePlay(video._id)}
                   className="outline-none flex flex-col gap-1 items-center"
