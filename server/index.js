@@ -48,12 +48,15 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Define a route for video uploads
 app.post("/api/upload", upload.single("video"), async (req, res) => {
   try {
+    // Construct the video URL
+    const videoURL = `https://chrome-fd0g.onrender.com/api/video/${req.file.filename}`;
+
     // Create the video object
     const video = new Video({
       filename: req.file.filename,
       originalname: req.file.originalname,
       uploadDate: new Date(),
-      videoURL: `https://chrome-fd0g.onrender.com/api/video/${video._id}`,
+      videoURL: videoURL,
     });
 
     // Save the video object to the database
@@ -61,7 +64,7 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
 
     res.json({
       message: "Video uploaded successfully",
-      videoURL: video.videoURL,
+      videoURL: videoURL,
     });
   } catch (error) {
     console.error("Error uploading video:", error);
@@ -70,6 +73,7 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
       .json({ error: "An error occurred while uploading the video" });
   }
 });
+
 // Define a route for serving videos
 app.get("/api/video/:id", async (req, res) => {
   try {
