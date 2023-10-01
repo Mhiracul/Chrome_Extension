@@ -7,6 +7,8 @@ const dotenv = require("dotenv");
 const path = require("path");
 const nodemailer = require("nodemailer");
 const fs = require("fs");
+const ffmpeg = require("fluent-ffmpeg");
+
 dotenv.config();
 
 const app = express();
@@ -29,14 +31,27 @@ app.post("/api/upload", upload.single("video"), (req, res) => {
       return res.status(400).json({ error: "No video file uploaded." });
     }
 
-    const videoURL = `https://chrome-fd0g.onrender.com/api/get-video/${encodeURIComponent(
-      req.file.filename
-    )}`;
-    res.status(200).json({
-      message: "Video uploaded successfully.",
-      videoPath: req.file.path,
-      videoURL,
-    });
+    const webmFilePath = req.file.path;
+    const mp4FilePath = webmFilePath.replace(".webm", ".mp4");
+
+    ffmpeg()
+      .input(webmFilePath)
+      .output(mp4FilePath)
+      .on("end", () => {
+        const videoURL = `https://chrome-fd0g.onrender.com/api/get-video/${encodeURIComponent(
+          req.file.filename.replace(".webm", ".mp4")
+        )}`;
+        res.status(200).json({
+          message: "Video uploaded and converted successfully.",
+          videoPath: mp4FilePath,
+          videoURL,
+        });
+      })
+      .on("error", (err) => {
+        console.error("Error converting video:", err);
+        res.status(500).json({ error: "Error converting video." });
+      })
+      .run();
   } catch (error) {
     console.error("Error uploading video:", error);
     res.status(500).json({ error: "Internal server error." });
