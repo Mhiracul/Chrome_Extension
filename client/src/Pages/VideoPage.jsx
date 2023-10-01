@@ -28,12 +28,10 @@ const VideoPage = () => {
     document.body.removeChild(textField);
     toast.success("Copied!");
 
-    // Update the state to indicate that the URL has been copied
     setCopied(true);
   };
   const handleSendEmail = async () => {
     try {
-      // Send a POST request to your server with the receiver's email and video URL
       await axios.post("/api/send-email", {
         receiverEmail,
         videoURL,
@@ -44,8 +42,6 @@ const VideoPage = () => {
       toast.error("Failed to send email. Please try again later.");
     }
   };
-
-  // Function to toggle the volume of the video
 
   return (
     <>
@@ -97,10 +93,7 @@ const VideoPage = () => {
                   <FiCopy color="#000" /> Copy
                 </button>
                 {copied && (
-                  <ToastContainer
-                    position="bottom-center"
-                    autoClose={2000} // Adjust this value as needed
-                  />
+                  <ToastContainer position="bottom-center" autoClose={2000} />
                 )}
               </div>
 

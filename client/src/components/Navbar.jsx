@@ -35,16 +35,11 @@ const Navbar = () => {
               className="text-[#120B48] outline-none text-[18px] font-bold"
               onClick={toggleMobileMenu}
             >
-              {isMobileMenuOpen ? (
-                <AiOutlineCloseCircle /> // Use AiOutlineCloseCircle when menu is open
-              ) : (
-                <BiMenuAltRight /> // Use BiMenuAltRight when menu is closed
-              )}
+              {isMobileMenuOpen ? <AiOutlineCloseCircle /> : <BiMenuAltRight />}
             </button>
           </div>
         </div>
 
-        {/* Mobile menu */}
         {isMobileMenuOpen && (
           <div className="sm:hidden mt-4 shadow-md  py-3 px-3">
             <ul className="flex flex-col gap-4">

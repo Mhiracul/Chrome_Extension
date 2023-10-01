@@ -6,21 +6,20 @@
   position: fixed;
   bottom: 20px;
   left: 20px;
-  width: 32px; /* Adjust the width as needed */
-  height: 32px; /* Adjust the height as needed */
-  background-color: red; /* Change the background color */
-  border-radius: 50%; /* Make it round */
+  width: 32px;
+  height: 32px;
+  background-color: red;
+  border-radius: 50%;
 }
 
-/* Styles for the timer */
 #timer {
   display: none;
   position: fixed;
   bottom: 270px;
   left: 60px;
   color: black;
-  font-size: 18px; /* Adjust the font size as needed */
-  font-weight: bold; /* Add font-weight as needed */
+  font-size: 18px;
+  font-weight: bold;
 }
 .round {
   border-radius: 50%;
@@ -64,14 +63,12 @@
   height: 20px;
 }
 
-/* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* The slider */
 .slider {
   position: absolute;
   cursor: pointer;
@@ -110,7 +107,6 @@ input:checked + .slider:before {
   transform: translateX(18px);
 }
 
-/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }

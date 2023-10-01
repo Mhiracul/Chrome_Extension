@@ -9,7 +9,6 @@ const VideoRepository = () => {
   const [videoList, setVideoList] = useState([]);
 
   useEffect(() => {
-    // Fetch the list of video URLs and names from the backend.
     axios
       .get("https://chrome-fd0g.onrender.com/api/list-videos")
       .then((response) => {
