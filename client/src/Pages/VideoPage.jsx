@@ -35,6 +35,19 @@ const VideoPage = () => {
     // Update the state to indicate that the URL has been copied
     setCopied(true);
   };
+  const handleSendEmail = async () => {
+    try {
+      // Send a POST request to your server with the receiver's email and video URL
+      await axios.post("/api/send-email", {
+        receiverEmail,
+        videoURL,
+      });
+
+      toast.success("Email sent successfully!");
+    } catch (error) {
+      toast.error("Failed to send email. Please try again later.");
+    }
+  };
 
   // Function to toggle the volume of the video
 
@@ -62,7 +75,10 @@ const VideoPage = () => {
                   value={receiverEmail}
                   onChange={(e) => setReceiverEmail(e.target.value)}
                 />
-                <button className="bg-[#605C84] rounded-md text-sm text-white py-1 px-3">
+                <button
+                  onClick={handleSendEmail}
+                  className="bg-[#605C84] rounded-md text-sm text-white py-1 px-3"
+                >
                   Send
                 </button>
               </div>
