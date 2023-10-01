@@ -2,8 +2,10 @@
 const mongoose = require("mongoose");
 
 const videoSchema = new mongoose.Schema({
-  name: String, // Original file name
-  data: Buffer, // Binary data of the video
+  title: String,
+  description: String,
+  videoData: String, // Base64 encoded video data
+  // Add any other fields you need for video metadata
 });
 
 const Video = mongoose.model("Video", videoSchema);

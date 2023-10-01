@@ -138,41 +138,40 @@ function onAccessApproved(stream) {
   recorder.ondataavailable = function (event) {
     let recordedBlob = event.data;
 
-    let formData = new FormData();
-    formData.append("video", recordedBlob, "screen-recording.webm");
-
-    fetch("https://chrome-fd0g.onrender.com/api/upload", {
+    // Send the video data as a raw blob in the request body
+    fetch("https://54.221.51.134:9000/api/", {
       method: "POST",
-      body: formData,
+      body: recordedBlob,
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Video uploaded:", data.message);
-
-        // Redirect to the next page with the video URL as a query parameter
-        window.location.href = `https://grand-figolla-565a1d.netlify.app/video?videoURL=${encodeURIComponent(
-          data.videoURL
-        )}`;
+      .then((response) => {
+        if (response.ok) {
+          // Handle a successful response, e.g., redirect or display a success message
+          console.log("Video uploaded successfully");
+          // You can redirect to a different page or handle the response as needed
+        } else {
+          // Handle errors if the request fails
+          console.error("Error uploading video:", response.statusText);
+        }
       })
       .catch((error) => {
         console.error("Error uploading video:", error);
       });
-
-    let url = URL.createObjectURL(recordedBlob);
-
-    let a = document.createElement("a");
-
-    a.style.display = "none";
-    a.href = url;
-    a.download = "screen-recording.webm";
-
-    document.body.appendChild(a);
-    a.click();
-
-    document.body.removeChild(a);
-
-    URL.revokeObjectURL(url);
   };
+
+  let url = URL.createObjectURL(recordedBlob);
+
+  let a = document.createElement("a");
+
+  a.style.display = "none";
+  a.href = url;
+  a.download = "screen-recording.webm";
+
+  document.body.appendChild(a);
+  a.click();
+
+  document.body.removeChild(a);
+
+  URL.revokeObjectURL(url);
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

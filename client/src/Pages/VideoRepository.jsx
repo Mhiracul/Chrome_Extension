@@ -11,7 +11,7 @@ const VideoRepository = () => {
   useEffect(() => {
     // Make a GET request to fetch all videos from your server
     axios
-      .get("https://chrome-fd0g.onrender.com/api/videos") // Replace with your server URL
+      .get("https://localhsot:3000/api/videos") // Replace with your server URL
       .then((response) => {
         setVideos(response.data);
       })

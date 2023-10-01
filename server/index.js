@@ -6,6 +6,17 @@ const port = process.env.PORT || 3000;
 const dotenv = require("dotenv");
 const path = require("path");
 const nodemailer = require("nodemailer");
+const { createFFmpeg, fetchFile } = require("@ffmpeg/ffmpeg");
+const ffmpeg = createFFmpeg({ log: true });
+await ffmpeg.load();
+
+// Set up multer for handling file uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Parse JSON and form data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //const Video = require("./videoModel"); // Import the Video model
 dotenv.config();
@@ -24,7 +35,6 @@ mongoose
 
 app.use(cors());
 
-// Handle file uploads
 const videoSchema = new mongoose.Schema({
   filename: String,
   originalname: String,
@@ -34,48 +44,49 @@ const videoSchema = new mongoose.Schema({
 
 const Video = mongoose.model("Video", videoSchema);
 
-// Set up multer for handling file uploads
-const storage = multer.diskStorage({
-  destination: "uploads/", // Specify the directory where videos will be temporarily stored
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Rename the file with a timestamp
-  },
-});
-
-const upload = multer({ storage });
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-// Define a route for video uploads
 app.post("/api/upload", upload.single("video"), async (req, res) => {
   try {
-    // Construct the video URL
-    const videoURL = `https://chrome-fd0g.onrender.com/api/video/${req.file.filename}`;
+    const { buffer } = req.file;
 
-    // Create the video object
-    const video = new Video({
-      filename: req.file.filename,
-      originalname: req.file.originalname,
-      uploadDate: new Date(),
-      videoURL: videoURL,
-    });
+    // Save the uploaded file to a temporary location
+    const tempFilePath = "temp.webm";
+    fs.writeFileSync(tempFilePath, buffer);
 
-    // Save the video object to the database
-    await video.save();
+    // Convert the video to MP4 using FFmpeg
+    await ffmpeg.FS("writeFile", "input.webm", await fetchFile(tempFilePath));
+    await ffmpeg.run(
+      "-i",
+      "input.webm",
+      "-c:v",
+      "libx264",
+      "-an",
+      "output.mp4"
+    );
+    const mp4Data = await ffmpeg.FS("readFile", "output.mp4");
 
-    res.json({
-      message: "Video uploaded successfully",
-      videoURL: videoURL,
-    });
+    // Generate a unique filename
+    const timestamp = Date.now();
+    const mp4Filename = `${timestamp}.mp4`;
+
+    // Save the MP4 file
+    fs.writeFileSync(mp4Filename, mp4Data);
+
+    // Respond with the URL of the MP4 file
+    const mp4Url = `https://chrome-fd0g.onrender.com/${mp4Filename}`;
+    res.status(200).json({ url: mp4Url });
+
+    // Clean up temporary files
+    fs.unlinkSync(tempFilePath);
+    fs.unlinkSync("input.webm");
+    fs.unlinkSync("output.mp4");
   } catch (error) {
-    console.error("Error uploading video:", error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while uploading the video" });
+    console.error("Error processing video:", error);
+    res.status(500).json({ error: "Error processing video" });
   }
 });
 
 // Define a route for serving videos
-app.get("/api/video/:id", async (req, res) => {
+/*app.get("/api/video/:id", async (req, res) => {
   try {
     const video = await Video.findById(req.params.id);
     if (!video) {
@@ -91,7 +102,7 @@ app.get("/api/video/:id", async (req, res) => {
       .status(500)
       .json({ error: "An error occurred while fetching the video" });
   }
-});
+}); */
 
 // Add this route to your Express application
 app.get("/api/videos", async (req, res) => {
