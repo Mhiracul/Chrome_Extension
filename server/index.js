@@ -5,6 +5,7 @@ const cors = require("cors"); // Import the cors middleware
 const port = process.env.PORT || 3000;
 const dotenv = require("dotenv");
 const path = require("path");
+const nodemailer = require("nodemailer");
 
 //const Video = require("./videoModel"); // Import the Video model
 dotenv.config();
