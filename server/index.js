@@ -47,17 +47,22 @@ const upload = multer({ storage });
 // Define a route for video uploads
 app.post("/api/upload", upload.single("video"), async (req, res) => {
   try {
-    const videoURL = `${req.protocol}://${req.get("host")}/api/video/${
-      video._id
-    }`;
-
+    // Create the video object
     const video = new Video({
       filename: req.file.filename,
       originalname: req.file.originalname,
       uploadDate: new Date(),
-      videoURL: videoURL,
     });
 
+    // Construct the video URL after creating the video object
+    const videoURL = `${req.protocol}://${req.get("host")}/api/video/${
+      video._id
+    }`;
+
+    // Update the video object with the videoURL
+    video.videoURL = videoURL;
+
+    // Save the video object to the database
     await video.save();
 
     res.json({ message: "Video uploaded successfully", videoURL });
