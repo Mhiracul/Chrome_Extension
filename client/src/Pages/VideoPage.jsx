@@ -57,7 +57,7 @@ const VideoPage = () => {
     <>
       <Navbar />
       <div className="min-h-screen w-full  font-sora">
-        <div className=" container flex md:flex-row  flex-col justify-between  mx-auto px-4 sm:px-6 md:px-8 py-10">
+        <div className=" container flex lg:flex-row md:flex-col  flex-col justify-between  mx-auto px-4 sm:px-6 md:px-8 py-10">
           <div className="w-full">
             <h1 className="text-4xl text-[#141414] font-semibold mb-4 font-sora ">
               Your Video is ready!
@@ -119,11 +119,50 @@ const VideoPage = () => {
             </div>
           </div>
           <div className="video-grid w-full">
-            <div>
+            <div className="border-[1px]  border-[#959494] flex-wrap  rounded-md">
               <p className="text-[#08051E] font-semibold text-sm">Video URL:</p>
-              <video controls width="100%" src={videoURL} className="my-2">
+              <video
+                controls
+                width="100%"
+                src={videoURL}
+                className="my-2 rounded-md"
+              >
                 Your browser does not support the video tag.
               </video>
+              <div className="video-controls flex flex-wrap  justify-end gap-4 py-2 px-6">
+                <button
+                  className="outline-none flex flex-wrap  flex-col gap-1 items-center"
+                  onClick={() => toggleVolume(video._id)}
+                >
+                  {video.muted ? (
+                    <>
+                      <BiVolumeMute />
+                      <span className="text-[10px]">Volume</span>
+                    </>
+                  ) : (
+                    <>
+                      <BiVolumeFull />{" "}
+                      <span className="text-[10px]">Volume</span>
+                    </>
+                  )}
+                </button>
+                <button
+                  onClick={() => togglePlay(video._id)}
+                  className="outline-none flex flex-col gap-1 items-center"
+                >
+                  {video.paused ? (
+                    <>
+                      <AiOutlinePlayCircle />{" "}
+                      <span className="text-[10px]">Play</span>
+                    </>
+                  ) : (
+                    <>
+                      <AiOutlinePauseCircle />{" "}
+                      <span className="text-[10px]">Pause</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>
