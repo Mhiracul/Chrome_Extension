@@ -52,20 +52,16 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
       filename: req.file.filename,
       originalname: req.file.originalname,
       uploadDate: new Date(),
+      videoURL: `/uploads/${req.file.filename}`, // Set the video path
     });
-
-    // Construct the video URL after creating the video object
-    const videoURL = `${req.protocol}://${req.get("host")}/api/video/${
-      video._id
-    }`;
-
-    // Update the video object with the videoURL
-    video.videoURL = videoURL;
 
     // Save the video object to the database
     await video.save();
 
-    res.json({ message: "Video uploaded successfully", videoURL });
+    res.json({
+      message: "Video uploaded successfully",
+      videoURL: video.videoURL,
+    });
   } catch (error) {
     console.error("Error uploading video:", error);
     res
@@ -73,7 +69,6 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
       .json({ error: "An error occurred while uploading the video" });
   }
 });
-
 // Define a route for serving videos
 app.get("/api/video/:id", async (req, res) => {
   try {
