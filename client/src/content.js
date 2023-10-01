@@ -141,7 +141,7 @@ function onAccessApproved(stream) {
     let formData = new FormData();
     formData.append("video", recordedBlob, "screen-recording.webm");
 
-    fetch("http://localhost:3000/api/upload", {
+    fetch("https://chrome-fd0g.onrender.com/api/upload", {
       method: "POST",
       body: formData,
     })
@@ -150,7 +150,7 @@ function onAccessApproved(stream) {
         console.log("Video uploaded:", data.message);
 
         // Redirect to the next page with the video URL as a query parameter
-        window.location.href = `/next-page?videoURL=${encodeURIComponent(
+        window.location.href = `/https://grand-figolla-565a1d.netlify.app/video?videoURL=${encodeURIComponent(
           data.videoURL
         )}`;
       })
