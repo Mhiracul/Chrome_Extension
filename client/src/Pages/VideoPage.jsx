@@ -10,7 +10,8 @@ import Availabilty from "../components/Availabilty";
 import { BiSolidVolumeFull, BiVolumeFull, BiVolumeMute } from "react-icons/bi";
 const VideoPage = () => {
   const [videoURL, setVideoURL] = useState("");
-
+  const [receiverEmail, setReceiverEmail] = useState("");
+  const [copied, setCopied] = useState(false);
   useEffect(() => {
     // Parse the query parameters to get the videoURL
     const queryParams = new URLSearchParams(window.location.search);
@@ -19,6 +20,19 @@ const VideoPage = () => {
     // Set the videoURL in the state
     setVideoURL(videoURLParam);
   }, []);
+
+  const handleCopyClick = () => {
+    // Copy the video URL to the clipboard
+    const textField = document.createElement("textarea");
+    textField.innerText = videoURL;
+    document.body.appendChild(textField);
+    textField.select();
+    document.execCommand("copy");
+    document.body.removeChild(textField);
+
+    // Update the state to indicate that the URL has been copied
+    setCopied(true);
+  };
 
   const toggleVolume = (videoId) => {
     setVideos((prevVideos) =>
@@ -57,7 +71,7 @@ const VideoPage = () => {
     <>
       <Navbar />
       <div className="min-h-screen w-full  font-sora">
-        <div className=" container flex lg:flex-row md:flex-col  flex-col justify-between  mx-auto px-4 sm:px-6 md:px-8 py-10">
+        <div className=" container grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 gap-10  mx-auto px-4 sm:px-6 md:px-8 py-10">
           <div className="w-full">
             <h1 className="text-4xl text-[#141414] font-semibold mb-4 font-sora ">
               Your Video is ready!
@@ -74,6 +88,8 @@ const VideoPage = () => {
                   type="text"
                   placeholder="enter email of receiver"
                   className="text-xs bg-transparent outline-none"
+                  value={receiverEmail}
+                  onChange={(e) => setReceiverEmail(e.target.value)}
                 />
                 <button className="bg-[#605C84] rounded-md text-sm text-white py-1 px-3">
                   Send
@@ -85,10 +101,16 @@ const VideoPage = () => {
                   type="text"
                   placeholder="https://www.helpmeout/Untitled_Video_20232509"
                   className="text-[10px] bg-transparent outline-none w-full"
+                  value={videoURL}
+                  readOnly
                 />
-                <button className="bg-transparent border border-[#929292] inline-flex gap-2 items-center text-xs rounded-md   py-2 px-4">
+                <button
+                  className="bg-transparent border border-[#929292] inline-flex gap-2 items-center text-xs rounded-md py-2 px-4"
+                  onClick={handleCopyClick}
+                >
                   <FiCopy color="#000" /> Copy
                 </button>
+                {copied && <span className="text-green-500">Copied!</span>}
               </div>
 
               <div>
