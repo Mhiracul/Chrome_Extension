@@ -1,0 +1,7 @@
+/* Add this CSS to your stylesheet or inside a <style> tag in your HTML */
+.stop-dot {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+}

@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Banner.css */
+.background-image {
+  position: absolute;
+  top: -10%;
+  right: -15%;
+  width: 100%;
+  height: 50%;
+  background: url("./assets/dot.svg");
+  background-size: cover;
+  background-position: top right;
+  z-index: 6;
+  opacity: 0.5;
+}
+
+.background {
+  position: absolute;
+  bottom: -30%;
+  left: -20%;
+  width: 80%;
+  height: 100%;
+  background-image: url("./assets/dots.svg");
+  background-size: cover;
+  background-position: bottom left;
+  z-index: 6;
+}
