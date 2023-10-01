@@ -15,11 +15,9 @@ const customCSS = `
   }
 `;
 
-// Create a style element and add your CSS rule
 const styleElement = document.createElement("style");
 styleElement.textContent = customCSS;
 
-// Append the style element to the document's head
 document.head.appendChild(styleElement);
 
 console.log("Hi, I have been injected whoopie!!!");
@@ -37,17 +35,17 @@ function createRecordingBar() {
   recordingBar.style.position = "fixed";
   recordingBar.style.bottom = "0";
   recordingBar.style.left = "0";
-  recordingBar.style.borderRadius = "20px";
-  recordingBar.style.border = "2px solid #ccc";
-  recordingBar.style.backgroundColor = "black"; // Customize the styling
+  recordingBar.style.borderRadius = "50%";
+  recordingBar.style.border = "3px solid #ccc";
+  recordingBar.style.backgroundColor = "black";
   recordingBar.style.color = "white";
   recordingBar.style.padding = "30px";
-  recordingBar.style.zIndex = "9999"; // Ensure it's above other content
-  recordingBar.id = "recordingBar"; // Add an ID to easily remove it later
+  recordingBar.style.zIndex = "9999";
+  recordingBar.id = "recordingBar";
   document.body.appendChild(recordingBar);
 
   stopButton = document.createElement("button");
-  stopButton.className = "stop-button"; // Apply the CSS class
+  stopButton.className = "stop-button";
   stopButton.innerHTML = '<div class="stop-dot"></div>';
   stopButton.style.marginLeft = "10px";
   stopButton.style.color = "white";
@@ -60,7 +58,6 @@ function createRecordingBar() {
   pauseButton.addEventListener("click", togglePauseRecording);
   recordingBar.appendChild(pauseButton);
 
-  // Create a camera toggle inside the recording bar
   cameraToggle = document.createElement("button");
   cameraToggle.innerHTML =
     '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 9.23V2h18v20H3v-7.23l-2-2zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4-10h-2v2h2V6zm-4 0H8v2h4V6z" fill="white"/></svg>';
@@ -68,7 +65,6 @@ function createRecordingBar() {
   cameraToggle.addEventListener("click", toggleCamera);
   recordingBar.appendChild(cameraToggle);
 
-  // Create an audio toggle inside the recording bar
   audioToggle = document.createElement("button");
   audioToggle.innerHTML =
     '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 9v6h4l5 5V4L10 9H6z" fill="white"/></svg>';
@@ -113,14 +109,11 @@ function updatePauseButtonIcon() {
   }
 }
 
-function toggleCamera() {
-  // Implement camera toggle logic here
-}
+function toggleCamera() {}
 
-function toggleAudio() {
-  // Implement audio toggle logic here
-}
+function toggleAudio() {}
 var recorder = null;
+
 function onAccessApproved(stream) {
   recorder = new MediaRecorder(stream);
 
@@ -138,40 +131,48 @@ function onAccessApproved(stream) {
   recorder.ondataavailable = function (event) {
     let recordedBlob = event.data;
 
-    // Send the video data as a raw blob in the request body
-    fetch("https://chrome-fd0g.onrender.com/api/upload", {
+    let formData = new FormData();
+    formData.append("video", recordedBlob, "screen-recording.webm");
+
+    fetch("http://localhost:3000/api/upload", {
       method: "POST",
-      body: recordedBlob,
+      body: formData,
     })
       .then((response) => {
         if (response.ok) {
-          // Handle a successful response, e.g., redirect or display a success message
-          console.log("Video uploaded successfully");
-          // You can redirect to a different page or handle the response as needed
+          console.log("Video uploaded successfully.");
+
+          response.json().then((data) => {
+            const videoURL = data.videoURL;
+
+            // Redirect to the next page with the video URL as a query parameter
+            window.location.href = `http://localhost:5173/videos?videoURL=${encodeURIComponent(
+              videoURL
+            )}`;
+          });
         } else {
-          // Handle errors if the request fails
-          console.error("Error uploading video:", response.statusText);
+          console.error("Failed to upload video.");
         }
       })
       .catch((error) => {
         console.error("Error uploading video:", error);
       });
+
+    let url = URL.createObjectURL(recordedBlob);
+
+    let a = document.createElement("a");
+
+    a.style.display = "none";
+    a.href = url;
+    a.download = "screen-recording.webm";
+
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
   };
-
-  let url = URL.createObjectURL(recordedBlob);
-
-  let a = document.createElement("a");
-
-  a.style.display = "none";
-  a.href = url;
-  a.download = "screen-recording.webm";
-
-  document.body.appendChild(a);
-  a.click();
-
-  document.body.removeChild(a);
-
-  URL.revokeObjectURL(url);
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

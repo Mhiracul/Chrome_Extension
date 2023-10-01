@@ -20,7 +20,7 @@ const Banner = () => {
         </div>
 
         <div className="w-1/2 flex md:flex-row flex-col md:justify-end justify-center">
-          <div className="grid md:grid-cols-2  gap-4">
+          <div className="lg:grid lg:grid-cols-2 sm:hidden md:hidden hidden  gap-4">
             <div className="flex flex-col gap-7">
               <img
                 src={Woman}
