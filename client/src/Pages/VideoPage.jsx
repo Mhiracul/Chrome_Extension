@@ -34,19 +34,6 @@ const VideoPage = () => {
     setCopied(true);
   };
 
-  const [video, setVideo] = useState(null);
-
-  // Function to toggle play/pause of the video
-  const togglePlay = () => {
-    if (video) {
-      if (video.paused) {
-        video.play();
-      } else {
-        video.pause();
-      }
-    }
-  };
-
   // Function to toggle the volume of the video
 
   return (
@@ -136,7 +123,6 @@ const VideoPage = () => {
             <div className="border-[1px]  border-[#959494] flex-wrap  rounded-md">
               <p className="text-[#08051E] font-semibold text-sm">Video URL:</p>
               <video
-                ref={(el) => setVideo(el)}
                 controls
                 width="100%"
                 src={videoURL}
@@ -144,24 +130,7 @@ const VideoPage = () => {
               >
                 Your browser does not support the video tag.
               </video>
-              <div className="video-controls flex flex-wrap  justify-end gap-4 py-2 px-6">
-                <button
-                  onClick={() => togglePlay(video._id)}
-                  className="outline-none flex flex-col gap-1 items-center"
-                >
-                  {video.paused ? (
-                    <>
-                      <AiOutlinePlayCircle />{" "}
-                      <span className="text-[10px]">Play</span>
-                    </>
-                  ) : (
-                    <>
-                      <AiOutlinePauseCircle />{" "}
-                      <span className="text-[10px]">Pause</span>
-                    </>
-                  )}
-                </button>
-              </div>
+              <div className="video-controls flex flex-wrap  justify-end gap-4 py-2 px-6"></div>
             </div>
           </div>
         </div>
