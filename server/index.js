@@ -68,15 +68,18 @@ app.get("/api/list-videos", (req, res) => {
       }
 
       const videoFiles = files.filter((file) =>
-        [".webm"].includes(path.extname(file).toLowerCase())
+        [".webm", ".mp4"].includes(path.extname(file).toLowerCase())
       );
 
       const videoList = videoFiles.map((file) => {
         const videoName = path.basename(file, path.extname(file));
-        const videoUrl = `https://chrome-fd0g.onrender.com/api/get-video/${encodeURIComponent(
+        const videoUrlWebM = `https://chrome-fd0g.onrender.com/api/get-video/${encodeURIComponent(
           file
         )}`;
-        return { name: videoName, url: videoUrl };
+        const videoUrlMP4 = `https://chrome-fd0g.onrender.com/api/get-video/${encodeURIComponent(
+          file.replace(".webm", ".mp4")
+        )}`;
+        return { name: videoName, urlWebM: videoUrlWebM, urlMP4: videoUrlMP4 };
       });
 
       res.status(200).json({ videos: videoList });
