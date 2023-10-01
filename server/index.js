@@ -43,6 +43,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Define a route for video uploads
 app.post("/api/upload", upload.single("video"), async (req, res) => {
@@ -52,7 +53,7 @@ app.post("/api/upload", upload.single("video"), async (req, res) => {
       filename: req.file.filename,
       originalname: req.file.originalname,
       uploadDate: new Date(),
-      videoURL: `/uploads/${req.file.filename}`, // Set the video path
+      videoURL: `https://chrome-fd0g.onrender.com/api/video/${video._id}`,
     });
 
     // Save the video object to the database
