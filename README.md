@@ -20,8 +20,11 @@ To get started with this Chrome plugin, follow these steps:
 Once the plugin is installed and configured, users can perform the following actions:
 
 . Open the Chrome plugin and navigate to the screen recording feature.
+
 . Start recording their screen activities.
+
 . Stop the recording when finished.
+
 . Submit the recorded content to the designated endpoint.
 
 ## Download Chrome Extension

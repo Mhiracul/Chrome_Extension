@@ -7,12 +7,17 @@ document.addEventListener("DOMContentLoaded", () => {
   let isCameraOn = false;
   let isAudioOn = false;
 
-  // Event listener for camera toggle
+  const closePopupButton = document.getElementById("closePopup");
+
+  closePopupButton.addEventListener("click", function () {
+    const popup = document.querySelector(".rounded-md.rounde");
+    popup.style.display = "none";
+  });
+
   toggleCamera.addEventListener("change", () => {
     isCameraOn = toggleCamera.checked;
   });
 
-  // Event listener for audio toggle
   toggleAudio.addEventListener("change", () => {
     isAudioOn = toggleAudio.checked;
   });
@@ -37,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Event listener to stop recording
   stopRecordingButton.addEventListener("click", () => {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       chrome.tabs.sendMessage(
