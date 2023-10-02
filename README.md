@@ -12,6 +12,7 @@ To get started with this Chrome plugin, follow these steps:
    ```
 
    1.Install any necessary dependencies.
+
    2.Set up the development environment for the plugin.
 
 ## Usage
