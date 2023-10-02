@@ -15,7 +15,13 @@ const Banner = () => {
             how to get things done on a website.
           </p>
           <button className="bg-[#120B48] text-white py-2 px-4 md:text-sm text-xs mt-4 rounded-md inline-flex gap-2 items-end justify-center">
-            Install HelpMeOut <BsArrowRight size={18} />
+            <a
+              href="https://drive.google.com/drive/folders/1Cx-cAPKTGqfBQVgcW1e_J6yaBp6YuFZH?usp=drive_link"
+              className="inline-flex gap-2 items-end justify-center"
+            >
+              {" "}
+              Install HelpMeOut <BsArrowRight size={18} />{" "}
+            </a>
           </button>
         </div>
 
