@@ -1,7 +1,7 @@
 import Rec from "../assets/rec.png";
 const HowItWorks = () => {
   return (
-    <div className="bg-white">
+    <div id="how" className="bg-white">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 py-10 ">
         <div>
           <h1 className="text-[#141414] text-center font-semibold text-2xl mb-3">

@@ -2,10 +2,11 @@ import { BsFillRecordCircleFill } from "react-icons/bs";
 import Video from "../assets/VideoRepository.png";
 import { FaLocationArrow } from "react-icons/fa";
 import { BiRefresh } from "react-icons/bi";
+import { Element } from "react-scroll";
 
 const Features = () => {
   return (
-    <div className="bg-[#F0F3F5] py-10">
+    <Element name="features" className="bg-[#F0F3F5] py-10" id="features">
       <div className="bg-white py-10">
         <div className="container mx-auto px-4 sm:px-6 md:px-8">
           <div className="text-center">
@@ -73,7 +74,7 @@ const Features = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Element>
   );
 };
 

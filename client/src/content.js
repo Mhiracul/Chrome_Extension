@@ -35,7 +35,7 @@ function createRecordingBar() {
   recordingBar.style.position = "fixed";
   recordingBar.style.bottom = "0";
   recordingBar.style.left = "0";
-  recordingBar.style.borderRadius = "50%";
+  recordingBar.style.borderRadius = "60px";
   recordingBar.style.border = "3px solid #ccc";
   recordingBar.style.backgroundColor = "black";
   recordingBar.style.color = "white";
@@ -83,6 +83,13 @@ function removeRecordingBar() {
 function stopRecording() {
   if (recorder) {
     recorder.stop();
+
+    // Add the following code to stop the screen recording stream immediately
+    const tracks = recorder.stream.getTracks();
+    tracks.forEach(function (track) {
+      track.stop();
+    });
+
     removeRecordingBar();
   }
 }
@@ -128,13 +135,21 @@ function onAccessApproved(stream) {
     removeRecordingBar();
   };
 
+  let recordedChunks = [];
+
   recorder.ondataavailable = function (event) {
-    let recordedBlob = event.data;
+    if (event.data.size > 0) {
+      recordedChunks.push(event.data);
+    }
+  };
+
+  recorder.onstop = function () {
+    const recordedBlob = new Blob(recordedChunks, { type: "video/mp4" });
 
     let formData = new FormData();
-    formData.append("video", recordedBlob, "screen-recording.webm");
+    formData.append("mfile", recordedBlob, "screen-recording.mp4");
 
-    fetch("https://chrome-fd0g.onrender.com/api/upload", {
+    fetch("http://l54.221.51.134:9000/api/", {
       method: "POST",
       body: formData,
     })
@@ -142,12 +157,8 @@ function onAccessApproved(stream) {
         if (response.ok) {
           console.log("Video uploaded successfully.");
 
-          response.json().then((data) => {
-            const videoURL = data.videoURL;
-
-            window.location.href = `https://grand-figolla-565a1d.netlify.app/videos?videoURL=${encodeURIComponent(
-              videoURL
-            )}`;
+          response.json().then((Message) => {
+            console.log("Message from the backend:", Message);
           });
         } else {
           console.error("Failed to upload video.");
@@ -163,7 +174,7 @@ function onAccessApproved(stream) {
 
     a.style.display = "none";
     a.href = url;
-    a.download = "screen-recording.webm";
+    a.download = "screen-recording.mp4";
 
     document.body.appendChild(a);
     a.click();

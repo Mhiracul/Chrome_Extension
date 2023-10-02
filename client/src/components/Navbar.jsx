@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
 import Logo from "../assets/Logo.png";
 import { useState } from "react";
 import { BiMenuAltRight } from "react-icons/bi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { Link } from "react-scroll";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -20,8 +20,15 @@ const Navbar = () => {
 
           <div className="text-[#000000] hidden sm:flex capitalize text-sm font-medium">
             <ul className="flex gap-6">
-              <li>Features</li>
-              <li>How it works</li>
+              <Link to="features" smooth={true} duration={500}>
+                {" "}
+                Features{" "}
+              </Link>
+              <li>
+                <Link to="how" smooth={true} duration={500}>
+                  How it works
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -43,8 +50,13 @@ const Navbar = () => {
         {isMobileMenuOpen && (
           <div className="sm:hidden mt-4 shadow-md  py-3 px-3">
             <ul className="flex flex-col gap-4">
-              <li>Features</li>
-              <li>How it works</li>
+              <Link to="features" smooth={true} duration={500}>
+                {" "}
+                Features{" "}
+              </Link>{" "}
+              <Link to="how" smooth={true} duration={500}>
+                How it works
+              </Link>
             </ul>
 
             <button className="capitalize text-[#120B48] text-[18px] mt-4 font-bold">

@@ -6,18 +6,47 @@ import { BsLink } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import axios from "axios";
 const VideoRepository = () => {
-  const [videoList, setVideoList] = useState([]);
-
+  const [videos, setVideos] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [transcription, setTranscription] = useState("");
   useEffect(() => {
-    axios
-      .get("https://chrome-fd0g.onrender.com/api/list-videos")
-      .then((response) => {
-        setVideoList(response.data.videos);
-      })
-      .catch((error) => {
-        console.error("Error fetching video list:", error);
-      });
+    async function fetchVideos() {
+      try {
+        const response = await fetch("http://54.221.51.134:9000/api/all");
+        if (response.ok) {
+          const data = await response.json();
+          setVideos(data.filter((url) => url.endsWith(".mp4"))); // Filter out only .mp4 files
+        } else {
+          console.error("Failed to fetch videos.");
+        }
+      } catch (error) {
+        console.error("Error fetching videos:", error);
+      }
+    }
+
+    fetchVideos();
   }, []);
+
+  const handleVideoClick = async (videoUrl) => {
+    try {
+      // Determine the corresponding transcription filename
+      const transcriptionFilename = `${videoUrl.substring(
+        videoUrl.lastIndexOf("/") + 1
+      )}.txt`;
+      const response = await axios.get(
+        `http://localhost:9000/api/${transcriptionFilename}`
+      );
+
+      if (response.status === 200) {
+        setSelectedVideo(videoUrl);
+        setTranscription(response.data); // Set the transcription data
+      } else {
+        console.error("Failed to fetch transcription.");
+      }
+    } catch (error) {
+      console.error("Error fetching transcription:", error);
+    }
+  };
   return (
     <div className="bg-white">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 py-10">
@@ -27,9 +56,9 @@ const VideoRepository = () => {
         </div>
 
         <div className="flex lg:flex-row md:flex-row flex-col gap-3 justify-between items-center py-8">
-          <div className="flex flex-col gap-2 items-center">
-            <h1 className="font-sora font-semibold text-xl">
-              Hello, John Mark
+          <div className="flex flex-col gap-2 items-center ">
+            <h1 className="font-sora font-semibold text-xl ">
+              Hello, Miracle 5️⃣
             </h1>
 
             <p className="text-[#141414] text-xs font-sans">
@@ -50,7 +79,7 @@ const VideoRepository = () => {
           <h1>Recent files</h1>
 
           <div className="grid md:grid-cols-2 grid-cols-1 gap-10 py-6">
-            {videoList.map((video, index) => (
+            {videos.map((videoUrl, index) => (
               <div
                 key={index}
                 className="border-[1px]  border-[#959494] flex-wrap  rounded-md p-2"
@@ -61,14 +90,15 @@ const VideoRepository = () => {
                   height="240"
                   className="rounded-lg"
                 >
-                  <source src={video.urlWebM} type="video/webm" />
-                  <source src={video.urlMP4} type="video/mp4" /> Your browser
+                  <source src={videoUrl} type="video/mp4" />
                   does not support the video tag.
                 </video>
+
+                <p>{videoUrl.transcriptUrl}</p>
                 <div className="flex md:flex-row gap-3 justify-between items-start">
                   <div className="py-3">
                     <p className="font-semibold text-xs capitalize">
-                      {video.name}
+                      Video {index + 1}
                     </p>
                     <p className="text-[#B6B3C6] text-xs font-medium mt-2 uppercase">
                       september 23, 2023
@@ -80,6 +110,15 @@ const VideoRepository = () => {
                     <CgMoreVertical />
                   </div>
                 </div>
+                {selectedVideo === videoUrl && (
+                  <div>
+                    <p>Transcription:</p>
+                    <p>{transcription}</p>
+                  </div>
+                )}
+                <button onClick={() => handleVideoClick(videoUrl)}>
+                  Show Transcription
+                </button>
               </div>
             ))}
           </div>

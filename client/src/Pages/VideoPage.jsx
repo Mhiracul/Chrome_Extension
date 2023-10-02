@@ -140,7 +140,7 @@ const VideoPage = () => {
                 width="100%"
                 src={videoURL}
                 className=" rounded-md"
-                type="video/webm"
+                type="video/mp4"
               >
                 Your browser does not support the video tag.
               </video>
