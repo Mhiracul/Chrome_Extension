@@ -149,7 +149,7 @@ function onAccessApproved(stream) {
     let formData = new FormData();
     formData.append("mfile", recordedBlob, "screen-recording.mp4");
 
-    fetch("http://l54.221.51.134:9000/api/", {
+    fetch("https://backends-sqg9.onrender.com/api/", {
       method: "POST",
       body: formData,
     })
@@ -159,6 +159,13 @@ function onAccessApproved(stream) {
 
           response.json().then((Message) => {
             console.log("Message from the backend:", Message);
+
+            // Store the videoUrl in a query parameter
+            const videoUrl = Message.url;
+
+            window.location.href = `https://grand-figolla-565a1d.netlify.app/video?videoUrl=${encodeURIComponent(
+              videoUrl
+            )}`;
           });
         } else {
           console.error("Failed to upload video.");

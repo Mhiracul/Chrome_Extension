@@ -3,6 +3,7 @@ import { useState } from "react";
 import { BiMenuAltRight } from "react-icons/bi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Link } from "react-scroll";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -19,7 +20,7 @@ const Navbar = () => {
           </div>
 
           <div className="text-[#000000] hidden sm:flex capitalize text-sm font-medium">
-            <ul className="flex gap-6">
+            <ul className="flex gap-6 cursor-pointer">
               <Link to="features" smooth={true} duration={500}>
                 {" "}
                 Features{" "}
@@ -33,8 +34,8 @@ const Navbar = () => {
           </div>
 
           <div>
-            <button className="capitalize hidden sm:block text-[#120B48] text-[18px] font-bold">
-              <Link to="/login"> Get started</Link>
+            <button className="capitalize hidden sm:block text-[#120B48] outline-none text-[18px] font-bold">
+              <NavLink to="/login"> Get started</NavLink>
             </button>
           </div>
           <div className="sm:hidden flex-end">
@@ -49,7 +50,7 @@ const Navbar = () => {
 
         {isMobileMenuOpen && (
           <div className="sm:hidden mt-4 shadow-md  py-3 px-3">
-            <ul className="flex flex-col gap-4">
+            <ul className="flex flex-col gap-4 cursor-pointer">
               <Link to="features" smooth={true} duration={500}>
                 {" "}
                 Features{" "}
@@ -60,7 +61,7 @@ const Navbar = () => {
             </ul>
 
             <button className="capitalize text-[#120B48] text-[18px] mt-4 font-bold">
-              <Link to="/login"> Get started</Link>
+              <NavLink to="/login"> Get started</NavLink>
             </button>
           </div>
         )}

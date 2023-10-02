@@ -9,19 +9,19 @@ import { FaFacebook, FaTelegram, FaWhatsapp } from "react-icons/fa";
 import Availabilty from "../components/Availabilty";
 import { AiOutlineEdit } from "react-icons/ai";
 const VideoPage = () => {
-  const [videoURL, setVideoURL] = useState("");
+  const [videoUrl, setvideoUrl] = useState("");
   const [receiverEmail, setReceiverEmail] = useState("");
   const [copied, setCopied] = useState(false);
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const videoURLParam = queryParams.get("videoURL");
+    const videoUrlParam = queryParams.get("videoUrl");
 
-    setVideoURL(videoURLParam);
+    setvideoUrl(videoUrlParam);
   }, []);
 
   const handleCopyClick = () => {
     const textField = document.createElement("textarea");
-    textField.innerText = videoURL;
+    textField.innerText = videoUrl;
     document.body.appendChild(textField);
     textField.select();
     document.execCommand("copy");
@@ -34,7 +34,7 @@ const VideoPage = () => {
     try {
       await axios.post("/api/send-email", {
         receiverEmail,
-        videoURL,
+        videoUrl,
       });
 
       toast.success("Email sent successfully!");
@@ -83,7 +83,7 @@ const VideoPage = () => {
                   type="text"
                   placeholder="https://www.helpmeout/Untitled_Video_20232509"
                   className="text-[10px] bg-transparent outline-none w-full"
-                  value={videoURL}
+                  value={videoUrl}
                   readOnly
                 />
                 <button
@@ -105,7 +105,7 @@ const VideoPage = () => {
                   <div className=" md:text-sm text-xs   text-[#08051E] rounded  border border-[#0A0628]">
                     <a
                       href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                        videoURL
+                        videoUrl
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -117,7 +117,7 @@ const VideoPage = () => {
                   <div className="md:text-sm text-xs  text-[#08051E] rounded  border border-[#0A0628]">
                     <a
                       href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                        videoURL
+                        videoUrl
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -138,7 +138,7 @@ const VideoPage = () => {
               <video
                 controls
                 width="100%"
-                src={videoURL}
+                src={videoUrl}
                 className=" rounded-md"
                 type="video/mp4"
               >

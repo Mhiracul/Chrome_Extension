@@ -12,10 +12,12 @@ const VideoRepository = () => {
   useEffect(() => {
     async function fetchVideos() {
       try {
-        const response = await fetch("http://54.221.51.134:9000/api/all");
+        const response = await fetch(
+          "https://backends-sqg9.onrender.com/api/all"
+        );
         if (response.ok) {
           const data = await response.json();
-          setVideos(data.filter((url) => url.endsWith(".mp4"))); // Filter out only .mp4 files
+          setVideos(data.filter((url) => url.endsWith(".mp4")));
         } else {
           console.error("Failed to fetch videos.");
         }
@@ -34,7 +36,7 @@ const VideoRepository = () => {
         videoUrl.lastIndexOf("/") + 1
       )}.txt`;
       const response = await axios.get(
-        `http://localhost:9000/api/${transcriptionFilename}`
+        `https://backends-sqg9.onrender.com/api/${transcriptionFilename}`
       );
 
       if (response.status === 200) {
